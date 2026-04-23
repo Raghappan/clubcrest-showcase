@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
 const TICKER_ITEMS = [
+  "TRIAL · L1 PROMOTION GAUNTLET · LIVE",
   "OP-014 LIGHTHOUSE · SHIPPED",
   "@oxide promoted → OPERATOR",
   "Initiation window 04 · open",
@@ -9,6 +10,7 @@ const TICKER_ITEMS = [
   "OP-027 CINDER · cold-start 412ms",
   "@neon · weekly delta +96",
   "Council seat 03 · contested",
+  "D:XL parent network · synced",
 ];
 
 export default function SystemBar() {
