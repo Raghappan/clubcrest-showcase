@@ -72,6 +72,13 @@
       radial-gradient(hsl(var(--ink) / 0.05) 1px, transparent 1px);
     background-size: 22px 22px;
     background-position: 0 0;
+    animation: bg-drift 60s linear infinite;
+  }
+
+  /* Native select option styling — keep dropdown legible */
+  select option {
+    background-color: hsl(var(--paper-deep));
+    color: hsl(var(--ink));
   }
 
   ::selection { background: hsl(var(--acid)); color: hsl(var(--acid-foreground)); }
@@ -161,3 +168,34 @@
   50%      { opacity: 0.35; }
 }
 .dot-pulse { animation: ticker-pulse 1.4s ease-in-out infinite; }
+
+/* Drifting dotted backdrop */
+@keyframes bg-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 440px 220px; }
+}
+
+/* Slow ember glow drift behind hero */
+@keyframes ember-drift {
+  0%   { transform: translate3d(-10%, 0%, 0) scale(1); opacity: 0.55; }
+  50%  { transform: translate3d(15%, -8%, 0) scale(1.15); opacity: 0.85; }
+  100% { transform: translate3d(-10%, 0%, 0) scale(1); opacity: 0.55; }
+}
+.ember-a { animation: ember-drift 18s ease-in-out infinite; }
+.ember-b { animation: ember-drift 24s ease-in-out infinite reverse; }
+
+/* Vertical scanning line */
+@keyframes scan-y {
+  0%   { transform: translateY(-10%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+.scan-line { animation: scan-y 9s linear infinite; }
+
+/* Subtle floating */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.float-soft { animation: float-soft 5s ease-in-out infinite; }

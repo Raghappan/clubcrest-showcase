@@ -6,10 +6,27 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative border-t border-ink overflow-hidden">
+      {/* Drifting ember glows */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="ember-a absolute -top-32 -left-20 w-[55vw] h-[55vw] rounded-full blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--acid) / 0.18), transparent 65%)" }}
+        />
+        <div
+          className="ember-b absolute -bottom-40 -right-24 w-[45vw] h-[45vw] rounded-full blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--acid) / 0.12), transparent 65%)" }}
+        />
+        {/* Scanning horizontal line */}
+        <div
+          className="scan-line absolute left-0 right-0 h-px"
+          style={{ background: "linear-gradient(90deg, transparent, hsl(var(--acid) / 0.55), transparent)" }}
+        />
+      </div>
+
       <div className="absolute inset-0 pointer-events-none">
         <div className="container h-full grid grid-cols-12 gap-0">
           {Array.from({ length: 13 }).map((_, i) => (
-            <div key={i} className={i === 0 || i === 12 ? "" : "border-l border-ink/8"} />
+            <div key={i} className={i === 0 || i === 12 ? "" : "border-l border-rule/60"} />
           ))}
         </div>
       </div>
