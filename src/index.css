@@ -72,6 +72,13 @@
       radial-gradient(hsl(var(--ink) / 0.05) 1px, transparent 1px);
     background-size: 22px 22px;
     background-position: 0 0;
+    animation: bg-drift 60s linear infinite;
+  }
+
+  /* Native select option styling — keep dropdown legible */
+  select option {
+    background-color: hsl(var(--paper-deep));
+    color: hsl(var(--ink));
   }
 
   ::selection { background: hsl(var(--acid)); color: hsl(var(--acid-foreground)); }
