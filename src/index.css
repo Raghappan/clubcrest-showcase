@@ -10,45 +10,45 @@
 
 @layer base {
   :root {
-    /* Surfaces — bone-white paper with deep ink */
-    --background: 42 28% 94%;
-    --foreground: 0 0% 6%;
+    /* Surfaces — deep obsidian with ivory ink */
+    --background: 225 18% 7%;
+    --foreground: 40 18% 92%;
 
-    --paper: 42 28% 94%;
-    --paper-deep: 38 22% 88%;
-    --ink: 0 0% 6%;
-    --ink-soft: 0 0% 18%;
-    --rule: 0 0% 6%;
+    --paper: 225 18% 7%;          /* base canvas */
+    --paper-deep: 225 16% 11%;    /* slightly raised */
+    --ink: 40 18% 92%;            /* ivory text + rules */
+    --ink-soft: 40 12% 70%;
+    --rule: 40 18% 92%;
 
-    /* Acid — the single signal color */
-    --acid: 72 100% 50%;        /* electric lime */
-    --acid-foreground: 0 0% 6%;
-    --signal: 14 100% 53%;      /* alert orange-red */
+    /* Acid — single signal color (kept) */
+    --acid: 72 100% 55%;          /* electric lime */
+    --acid-foreground: 225 18% 7%;
+    --signal: 14 100% 60%;        /* alert orange */
 
-    --card: 42 28% 94%;
-    --card-foreground: 0 0% 6%;
+    --card: 225 16% 11%;
+    --card-foreground: 40 18% 92%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 42 28% 94%;
+    --popover: 225 16% 11%;
+    --popover-foreground: 40 18% 92%;
 
-    --primary: 0 0% 6%;
-    --primary-foreground: 42 28% 94%;
+    --primary: 40 18% 92%;
+    --primary-foreground: 225 18% 7%;
 
-    --secondary: 38 22% 88%;
-    --secondary-foreground: 0 0% 6%;
+    --secondary: 225 14% 16%;
+    --secondary-foreground: 40 18% 92%;
 
-    --muted: 38 22% 88%;
-    --muted-foreground: 0 0% 32%;
+    --muted: 225 14% 16%;
+    --muted-foreground: 40 10% 60%;
 
-    --accent: 72 100% 50%;
-    --accent-foreground: 0 0% 6%;
+    --accent: 72 100% 55%;
+    --accent-foreground: 225 18% 7%;
 
-    --destructive: 14 100% 53%;
-    --destructive-foreground: 42 28% 94%;
+    --destructive: 14 100% 60%;
+    --destructive-foreground: 40 18% 92%;
 
-    --border: 0 0% 6%;
-    --input: 0 0% 6%;
-    --ring: 72 100% 50%;
+    --border: 40 14% 38%;
+    --input: 40 14% 38%;
+    --ring: 72 100% 55%;
 
     --radius: 0px;
 
@@ -69,12 +69,12 @@
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02", "cv01", "cv11";
     background-image:
-      radial-gradient(hsl(var(--ink) / 0.07) 1px, transparent 1px);
+      radial-gradient(hsl(var(--ink) / 0.05) 1px, transparent 1px);
     background-size: 22px 22px;
     background-position: 0 0;
   }
 
-  ::selection { background: hsl(var(--acid)); color: hsl(var(--ink)); }
+  ::selection { background: hsl(var(--acid)); color: hsl(var(--acid-foreground)); }
 }
 
 @layer components {
