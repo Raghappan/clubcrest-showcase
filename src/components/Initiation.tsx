@@ -1,22 +1,46 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Initiation() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ handle: "", proof: "", cell: "FORGE" });
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.handle || !form.proof) {
       toast({ title: "Missing fields", description: "Handle and proof of work are required." });
       return;
     }
-    setSubmitted(true);
-    toast({
-      title: "Initiation request received",
-      description: `Queued under cell ${form.cell}. The Council reviews on the next cycle.`,
-    });
+    if (form.handle.length > 64 || form.proof.length > 500) {
+      toast({ title: "Too long", description: "Keep handle ≤ 64 and proof ≤ 500 characters." });
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-initiation", {
+        body: { handle: form.handle, cell: form.cell, proof: form.proof },
+      });
+
+      if (error) throw new Error(error.message ?? "Submission failed.");
+      if (data && (data as { error?: string }).error) {
+        throw new Error((data as { error: string }).error);
+      }
+
+      setSubmitted(true);
+      toast({
+        title: "Initiation request received",
+        description: `Filed under cell ${form.cell}. The Council reviews on the next cycle.`,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error.";
+      toast({ title: "Could not file request", description: message });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
