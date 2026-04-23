@@ -14,14 +14,17 @@ export default function Footer() {
               <div className="display font-black uppercase tracking-tight text-lg">Codex Syndicate</div>
             </div>
             <p className="text-[13.5px] leading-relaxed max-w-sm text-ink-soft">
-              A private guild within DXL. Built. Ranked. Not born.<br/>
+              A private guild within <span className="text-ink font-bold">D:XL</span>. Built. Ranked. Not born.<br/>
               Doctrine v2.04 — ratified by the Council, Q4.
             </p>
+            <div className="mt-5 mono text-[10px] tracking-[0.22em] uppercase text-muted-foreground">
+              · part of the official D:XL guild network ·
+            </div>
           </div>
 
           {/* Cols */}
-          <FooterCol title="00 — guild" items={["Manifesto", "Hierarchy", "Doctrine", "Cells"]} />
-          <FooterCol title="01 — public" items={["Operator ledger", "Operations", "Promotions", "Council notes"]} />
+          <FooterCol title="00 — guild" items={["Manifesto", "Constellation", "Doctrine", "Cells"]} />
+          <FooterCol title="01 — public" items={["Roster", "Operations", "Promotions", "Council notes"]} />
           <FooterCol title="02 — contact" items={["Initiation", "press@codex", "captains@codex", "doctrine@codex"]} />
         </div>
 
