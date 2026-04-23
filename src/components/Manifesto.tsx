@@ -24,7 +24,7 @@ const PRINCIPLES = [
   {
     n: "V.",
     head: "Mentorship is mandatory.",
-    body: "Every operator above R3 takes one initiate per quarter. You do not graduate the Syndicate — you reproduce it.",
+    body: "Every operator above L3 takes one initiate per quarter. You do not graduate the Syndicate — you reproduce it.",
   },
   {
     n: "VI.",
