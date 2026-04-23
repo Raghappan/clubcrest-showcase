@@ -152,11 +152,12 @@ export default function Initiation() {
 
                   <button
                     type="submit"
-                    className="w-full mt-4 bg-ink text-paper py-4 mono text-[11.5px] tracking-[0.25em] uppercase hover:bg-acid hover:text-ink transition-colors flex items-center justify-center gap-3"
+                    disabled={submitting}
+                    className="w-full mt-4 bg-ink text-paper py-4 mono text-[11.5px] tracking-[0.25em] uppercase hover:bg-acid hover:text-ink transition-colors flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-acid" />
-                    submit_request()
-                    <span>→</span>
+                    <span className={`w-1.5 h-1.5 rounded-full bg-acid ${submitting ? "animate-pulse" : ""}`} />
+                    {submitting ? "filing_request..." : "submit_request()"}
+                    <span>{submitting ? "··" : "→"}</span>
                   </button>
 
                   <p className="mono text-[10px] tracking-[0.18em] uppercase text-muted-foreground leading-relaxed">
