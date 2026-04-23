@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { TOTAL_MEMBERS, RANKS } from "@/data/syndicate";
+import { RECRUITMENT, IC_RANKS, MGMT_RANKS } from "@/data/syndicate";
 
 export default function Hero() {
+  const pct = Math.round((RECRUITMENT.filled / RECRUITMENT.target) * 100);
+
   return (
     <section id="top" className="relative border-t border-ink overflow-hidden">
-      {/* Vertical column rules */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="container h-full grid grid-cols-12 gap-0">
           {Array.from({ length: 13 }).map((_, i) => (
@@ -16,16 +17,16 @@ export default function Hero() {
       <div className="container relative pt-10 pb-16 md:pt-16 md:pb-24">
         {/* Tag row */}
         <div className="flex items-center justify-between mb-10 md:mb-14">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <span className="px-2 py-1 bg-acid text-ink mono text-[10.5px] tracking-[0.2em] uppercase font-medium">
-              ◆ A DXL · CODEX GUILD
+              ◆ DXL · CODEX SYNDICATES
             </span>
             <span className="hidden sm:inline-flex mono text-[10.5px] tracking-[0.2em] uppercase text-muted-foreground">
               EST. 2024 · BENGALURU
             </span>
           </div>
           <div className="hidden sm:block mono text-[10.5px] tracking-[0.2em] uppercase text-muted-foreground">
-            // dossier — public extract
+            // public dossier · v2.04
           </div>
         </div>
 
@@ -33,7 +34,7 @@ export default function Hero() {
         <div className="grid grid-cols-12 gap-x-6 gap-y-10 items-end">
           <div className="col-span-12 lg:col-span-8">
             <div className="mono text-[10.5px] tracking-[0.25em] uppercase text-muted-foreground mb-4">
-              ——— a hierarchy of builders
+              ——— eleven rungs · two tracks · one ladder
             </div>
 
             <h1 className="display font-black uppercase leading-[0.82] tracking-[-0.025em] text-[18vw] sm:text-[15vw] lg:text-[12rem] xl:text-[14rem]">
@@ -66,30 +67,56 @@ export default function Hero() {
             </h1>
           </div>
 
-          {/* Right column — counter + paragraph */}
+          {/* Right column — recruitment counter + paragraph */}
           <div className="col-span-12 lg:col-span-4 lg:pl-6 lg:border-l lg:border-ink space-y-8">
             <div>
-              <div className="mono text-[10.5px] tracking-[0.25em] uppercase text-muted-foreground mb-2">
-                Active operators
+              <div className="mono text-[10.5px] tracking-[0.25em] uppercase text-muted-foreground mb-2 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-acid rounded-full dot-pulse" />
+                tech syndicates recruited
               </div>
-              <div className="display font-black text-7xl md:text-8xl leading-none tracking-tighter">
-                {TOTAL_MEMBERS.toString().padStart(2, "0")}
+              <div className="display font-black text-7xl md:text-8xl leading-none tracking-tighter flex items-baseline gap-2">
+                {String(RECRUITMENT.filled).padStart(2, "0")}
+                <span className="text-3xl md:text-4xl text-muted-foreground">/{RECRUITMENT.target}</span>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-2 mono text-[11px]">
-                {RANKS.slice(0, 6).map((r) => (
-                  <div key={r.id} className="flex items-center justify-between border-b border-ink/15 py-1">
-                    <span className="text-muted-foreground tracking-wider">{r.code} {r.title}</span>
-                    <span className="font-medium">{r.count.toString().padStart(2, "0")}</span>
+
+              {/* Progress bar */}
+              <div className="mt-4 h-2 w-full bg-ink/10 relative overflow-hidden">
+                <motion.div
+                  className="h-full bg-acid"
+                  initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                  transition={{ duration: 1.4, delay: 0.5, ease: [0.7,0,0.2,1] }}
+                />
+              </div>
+              <div className="mt-2 mono text-[10.5px] tracking-[0.22em] uppercase text-muted-foreground flex justify-between">
+                <span>cycle · {RECRUITMENT.cycle}</span>
+                <span>{pct}% filled</span>
+              </div>
+
+              {/* Track split */}
+              <div className="mt-6 grid grid-cols-2 gap-2 mono text-[11px]">
+                <div className="border border-ink p-3">
+                  <div className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground">IC track</div>
+                  <div className="display font-black text-2xl mt-1 leading-none">
+                    {IC_RANKS.reduce((s, r) => s + r.count, 0)}
+                    <span className="text-sm text-muted-foreground">/{IC_RANKS.reduce((s, r) => s + r.capacity, 0)}</span>
                   </div>
-                ))}
+                  <div className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mt-1">L0 → DE</div>
+                </div>
+                <div className="border border-ink p-3 bg-ink text-paper">
+                  <div className="text-[10px] tracking-[0.22em] uppercase opacity-60">MGMT fork</div>
+                  <div className="display font-black text-2xl mt-1 leading-none">
+                    {MGMT_RANKS.reduce((s, r) => s + r.count, 0)}
+                    <span className="text-sm opacity-60">/{MGMT_RANKS.reduce((s, r) => s + r.capacity, 0)}</span>
+                  </div>
+                  <div className="text-[10px] tracking-[0.22em] uppercase opacity-60 mt-1">EM → CTO</div>
+                </div>
               </div>
             </div>
 
             <p className="text-[15px] leading-relaxed max-w-md">
-              <span className="font-bold">Codex Syndicate</span> is a private guild of engineers,
-              designers and operators inside DXL. We are <em>not</em> a community —
-              we are a chain of command, mentored from <span className="mono text-[12px] bg-ink text-paper px-1.5 py-0.5">R5</span> to{" "}
-              <span className="mono text-[12px] bg-acid text-ink px-1.5 py-0.5">R0</span>, and we ship in cells.
+              <span className="font-bold">Codex Syndicates</span> is the engineering guild
+              of D:XL. We've sworn in <span className="mono bg-acid text-ink px-1.5 py-0.5 text-[12px]">{RECRUITMENT.filled}/50</span> tech syndicates and the ladder is open —
+              eleven rungs, an IC track and a management fork at Senior. No politics. Only the work.
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
@@ -97,14 +124,14 @@ export default function Hero() {
                 href="#hierarchy"
                 className="inline-flex items-center gap-2 bg-ink text-paper px-5 py-3 mono text-[11px] tracking-[0.2em] uppercase hover:bg-acid hover:text-ink transition-colors"
               >
-                <span>view the hierarchy</span>
+                <span>view the ladder</span>
                 <span>↘</span>
               </a>
               <a
-                href="#manifesto"
+                href="#initiation"
                 className="inline-flex items-center gap-2 border border-ink px-5 py-3 mono text-[11px] tracking-[0.2em] uppercase hover:bg-ink hover:text-paper transition-colors"
               >
-                read the manifesto
+                request a seat
               </a>
             </div>
           </div>
@@ -113,10 +140,10 @@ export default function Hero() {
         {/* Bottom meta strip */}
         <div className="mt-14 grid grid-cols-2 md:grid-cols-4 border-t border-ink">
           {[
-            ["Cells active", "08"],
-            ["Operations live", "07"],
-            ["Doctrine version", "2.04"],
-            ["Initiation seats", "05 / open"],
+            ["Ladder rungs", "11"],
+            ["Cells active", String(RECRUITMENT.cellsActive).padStart(2,"0")],
+            ["Operations live", String(RECRUITMENT.opsLive).padStart(2,"0")],
+            ["Doctrine", "v2.04"],
           ].map(([k, v], i) => (
             <div
               key={k}

@@ -25,8 +25,8 @@ export default function Nav() {
         {/* Nav */}
         <nav className="hidden lg:flex items-center gap-9 mono text-[11.5px] tracking-[0.18em] uppercase">
           <a href="#manifesto" className="reveal-link"><span className="text-acid mr-1">01</span>Manifesto</a>
-          <a href="#hierarchy" className="reveal-link"><span className="text-acid mr-1">02</span>Hierarchy</a>
-          <a href="#operators" className="reveal-link"><span className="text-acid mr-1">03</span>Operators</a>
+          <a href="#hierarchy" className="reveal-link"><span className="text-acid mr-1">02</span>Ladder</a>
+          <a href="#operators" className="reveal-link"><span className="text-acid mr-1">03</span>Roster</a>
           <a href="#operations" className="reveal-link"><span className="text-acid mr-1">04</span>Operations</a>
           <a href="#initiation" className="reveal-link"><span className="text-acid mr-1">05</span>Initiation</a>
         </nav>
