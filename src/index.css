@@ -10,45 +10,45 @@
 
 @layer base {
   :root {
-    /* Surfaces — deep obsidian with ivory ink */
-    --background: 225 18% 7%;
-    --foreground: 40 18% 92%;
+    /* Surfaces — Blood Circuit: warm-tinted obsidian + bone white ink */
+    --background: 18 18% 3%;       /* #0A0806 warm near-black */
+    --foreground: 40 18% 92%;      /* bone white */
 
-    --paper: 225 18% 7%;          /* base canvas */
-    --paper-deep: 225 16% 11%;    /* slightly raised */
-    --ink: 40 18% 92%;            /* ivory text + rules */
+    --paper: 18 18% 3%;            /* base canvas #0A0806 */
+    --paper-deep: 18 22% 8%;       /* slightly raised #1C1510 */
+    --ink: 40 18% 92%;             /* bone white text + rules */
     --ink-soft: 40 12% 70%;
-    --rule: 40 18% 92%;
+    --rule: 18 22% 8%;             /* #1C1510 — subtle warm grid lines */
 
-    /* Acid — single signal color (kept) */
-    --acid: 72 100% 55%;          /* electric lime */
-    --acid-foreground: 225 18% 7%;
-    --signal: 14 100% 60%;        /* alert orange */
+    /* Acid — blood orange signal */
+    --acid: 14 100% 59%;           /* #FF5C2E blood orange */
+    --acid-foreground: 18 18% 3%;  /* #0A0806 on orange */
+    --signal: 14 100% 59%;
 
-    --card: 225 16% 11%;
+    --card: 18 22% 8%;
     --card-foreground: 40 18% 92%;
 
-    --popover: 225 16% 11%;
+    --popover: 18 22% 8%;
     --popover-foreground: 40 18% 92%;
 
     --primary: 40 18% 92%;
-    --primary-foreground: 225 18% 7%;
+    --primary-foreground: 18 18% 3%;
 
-    --secondary: 225 14% 16%;
+    --secondary: 18 20% 10%;
     --secondary-foreground: 40 18% 92%;
 
-    --muted: 225 14% 16%;
+    --muted: 18 20% 10%;
     --muted-foreground: 40 10% 60%;
 
-    --accent: 72 100% 55%;
-    --accent-foreground: 225 18% 7%;
+    --accent: 14 100% 59%;
+    --accent-foreground: 18 18% 3%;
 
-    --destructive: 14 100% 60%;
+    --destructive: 14 100% 59%;
     --destructive-foreground: 40 18% 92%;
 
-    --border: 40 14% 38%;
-    --input: 40 14% 38%;
-    --ring: 72 100% 55%;
+    --border: 18 22% 14%;
+    --input: 18 22% 14%;
+    --ring: 14 100% 59%;
 
     --radius: 0px;
 

@@ -74,9 +74,9 @@ export default function Hero() {
                 <span className="w-1.5 h-1.5 bg-acid rounded-full dot-pulse" />
                 tech syndicates recruited
               </div>
-              <div className="display font-black text-7xl md:text-8xl leading-none tracking-tighter flex items-baseline gap-2">
+              <div className="display font-black text-7xl md:text-8xl leading-none tracking-tighter flex items-baseline gap-2 text-acid">
                 {String(RECRUITMENT.filled).padStart(2, "0")}
-                <span className="text-3xl md:text-4xl text-muted-foreground">/{RECRUITMENT.target}</span>
+                <span className="text-3xl md:text-4xl">/{RECRUITMENT.target}</span>
               </div>
 
               {/* Progress bar */}
