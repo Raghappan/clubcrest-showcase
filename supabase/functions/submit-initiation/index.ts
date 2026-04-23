@@ -1,19 +1,21 @@
-// Codex Syndicate — Initiation request proxy → MongoDB Atlas Data API
-// Receives a validated initiation submission and inserts it into the
-// `initiations` collection in MongoDB Atlas.
+// Codex Syndicate — Initiation request handler → MongoDB (official Node driver)
+// Inserts validated submissions into the `initiations` collection of the
+// `codex_syndicate` database in MongoDB Atlas.
+
+import { MongoClient } from "npm:mongodb@6.10.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const ALLOWED_CELLS = ["FORGE", "PRISM", "VAULT", "ATLAS", "ECHO", "RELAY"];
+
 interface InitiationBody {
   handle: string;
   cell: string;
   proof: string;
 }
-
-const ALLOWED_CELLS = ["FORGE", "PRISM", "VAULT", "ATLAS", "ECHO", "RELAY"];
 
 function validate(body: unknown): { ok: true; data: InitiationBody } | { ok: false; error: string } {
   if (!body || typeof body !== "object") return { ok: false, error: "Body must be a JSON object." };
@@ -27,12 +29,26 @@ function validate(body: unknown): { ok: true; data: InitiationBody } | { ok: fal
   if (!/^@?[a-zA-Z0-9_.-]+$/.test(handle)) return { ok: false, error: "handle has invalid characters." };
   if (!ALLOWED_CELLS.includes(cell)) return { ok: false, error: "cell must be one of " + ALLOWED_CELLS.join(", ") };
   if (!proof || proof.length > 500) return { ok: false, error: "proof must be 1–500 chars." };
-  // Loose URL/domain check — accepts github.com/foo, https://..., etc.
   if (!/^(https?:\/\/)?[\w.-]+\.[a-z]{2,}.*/i.test(proof)) {
     return { ok: false, error: "proof must look like a link (e.g. github.com/you/repo)." };
   }
 
   return { ok: true, data: { handle: handle.startsWith("@") ? handle : "@" + handle, cell, proof } };
+}
+
+// Reuse the connection across invocations (warm starts)
+let cachedClient: MongoClient | null = null;
+
+async function getClient(uri: string): Promise<MongoClient> {
+  if (cachedClient) return cachedClient;
+  const client = new MongoClient(uri, {
+    // Edge runtime is short-lived; keep timeouts tight.
+    serverSelectionTimeoutMS: 8000,
+    connectTimeoutMS: 8000,
+  });
+  await client.connect();
+  cachedClient = client;
+  return client;
 }
 
 Deno.serve(async (req) => {
@@ -47,17 +63,10 @@ Deno.serve(async (req) => {
     });
   }
 
-  const MONGODB_DATA_API_URL = Deno.env.get("MONGODB_DATA_API_URL");
-  const MONGODB_DATA_API_KEY = Deno.env.get("MONGODB_DATA_API_KEY");
-
-  if (!MONGODB_DATA_API_URL) {
+  // Stored under MONGODB_DATA_API_URL for legacy reasons — value is the mongodb+srv:// string.
+  const MONGO_URI = Deno.env.get("MONGODB_DATA_API_URL");
+  if (!MONGO_URI) {
     return new Response(JSON.stringify({ error: "MONGODB_DATA_API_URL is not configured." }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
-  if (!MONGODB_DATA_API_KEY) {
-    return new Response(JSON.stringify({ error: "MONGODB_DATA_API_KEY is not configured." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -89,42 +98,16 @@ Deno.serve(async (req) => {
     cycle: "Q1-2026",
   };
 
-  // MongoDB Atlas Data API — insertOne
-  // URL form: https://data.mongodb-api.com/app/<app-id>/endpoint/data/v1
-  // We append /action/insertOne
   try {
-    const endpoint = MONGODB_DATA_API_URL.replace(/\/$/, "") + "/action/insertOne";
-    const mongoRes = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "apiKey": MONGODB_DATA_API_KEY,
-      },
-      body: JSON.stringify({
-        dataSource: "Cluster0",
-        database: "codex_syndicate",
-        collection: "initiations",
-        document,
-      }),
-    });
-
-    const text = await mongoRes.text();
-    if (!mongoRes.ok) {
-      console.error("Mongo insert failed", mongoRes.status, text);
-      return new Response(
-        JSON.stringify({ error: "Upstream storage rejected the request.", status: mongoRes.status, detail: text.slice(0, 300) }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-
-    let mongoJson: { insertedId?: string } = {};
-    try { mongoJson = JSON.parse(text); } catch { /* ignore */ }
+    const client = await getClient(MONGO_URI);
+    const db = client.db("codex_syndicate");
+    const coll = db.collection("initiations");
+    const insertResult = await coll.insertOne(document);
 
     return new Response(
       JSON.stringify({
         success: true,
-        id: mongoJson.insertedId ?? null,
+        id: insertResult.insertedId?.toString() ?? null,
         cell: document.cell,
         submittedAt: document.submittedAt,
       }),
@@ -133,6 +116,8 @@ Deno.serve(async (req) => {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("submit-initiation error:", message);
+    // Reset cached client so the next invocation can reconnect.
+    cachedClient = null;
     return new Response(
       JSON.stringify({ error: "Failed to submit initiation request.", detail: message }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
