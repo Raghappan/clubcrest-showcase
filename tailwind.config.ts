@@ -35,6 +35,7 @@ export default {
           foreground: "hsl(var(--acid-foreground))",
         },
         signal: "hsl(var(--signal))",
+        rule: "hsl(var(--rule))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
