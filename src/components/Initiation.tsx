@@ -108,10 +108,11 @@ export default function Initiation() {
                     <select
                       value={form.cell}
                       onChange={(e) => setForm({ ...form, cell: e.target.value })}
-                      className="w-full bg-transparent border-b border-ink py-2 mono text-sm focus:outline-none focus:border-acid"
+                      className="w-full bg-transparent border-b border-ink py-2 mono text-sm text-ink focus:outline-none focus:border-acid appearance-none cursor-pointer"
+                      style={{ colorScheme: "dark" }}
                     >
                       {["FORGE","PRISM","VAULT","ATLAS","ECHO","RELAY"].map(c => (
-                        <option key={c} value={c}>{c}</option>
+                        <option key={c} value={c} className="bg-paper-deep text-ink mono">{c}</option>
                       ))}
                     </select>
                   </Field>
