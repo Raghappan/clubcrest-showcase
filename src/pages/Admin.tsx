@@ -5,6 +5,8 @@ export default function Admin() {
   const [operations, setOperations] = useState<any[]>([]);
   const [newOperator, setNewOperator] = useState({ handle: "", name: "", rank: "", cell: "", region: "", specialty: "", joined: "" });
   const [newOperation, setNewOperation] = useState({ code: "", name: "", cell: "", status: "ACTIVE", desc: "", week: "" });
+  const [authed, setAuthed] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     fetch('/api/operators').then(r => r.json()).then(setOperators)
@@ -31,6 +33,32 @@ export default function Admin() {
   const deleteOperation = async (id: string) => {
     await fetch(`/api/operations?id=${id}`, { method: 'DELETE' })
     setOperations(operations.filter(o => o._id !== id))
+  }
+
+  if (!authed) {
+    return (
+      <div className="min-h-screen bg-[#0A0806] flex items-center justify-center font-mono">
+        <div className="border border-[#1C1510] p-10 w-full max-w-sm">
+          <div className="text-[10px] tracking-[0.25em] uppercase text-[#7A6F68] mb-2">// restricted access</div>
+          <h1 className="text-2xl font-black uppercase text-[#F5F0EB] mb-6">Enter <span className="text-[#FF5C2E]">Password</span></h1>
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === "Enter" && password === "dxl2024") setAuthed(true);
+            }}
+            className="w-full bg-[#110D09] border border-[#1C1510] text-[#F5F0EB] p-3 text-sm font-mono focus:border-[#FF5C2E] focus:outline-none mb-4 placeholder:text-[#7A6F68]"
+          />
+          <button
+            onClick={() => { if (password === "dxl2024") setAuthed(true); }}
+            className="w-full px-4 py-3 bg-[#FF5C2E] text-[#0A0806] font-mono text-[11px] tracking-[0.2em] uppercase font-bold hover:bg-[#F5F0EB] transition-colors">
+            Access Panel →
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
