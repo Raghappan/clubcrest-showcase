@@ -28,7 +28,7 @@ const RANK_COLORS: Record<string, string> = {
   const sorted = useMemo(() => {
     const order = (id: string) => ALL_RANKS.findIndex((r) => r.id === id);
     return [...OPERATORS].sort((a, b) => order(b.rank) - order(a.rank));
-  }, []);
+  }, [OPERATORS]);
 
   const cells = ["ALL", ...Array.from(new Set(OPERATORS.map((o) => o.cell)))];
   const visible = filter === "ALL" ? sorted : sorted.filter((o) => o.cell === filter);
