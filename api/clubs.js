@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-const client = new MongoClient(process.env.MONGODB_URI)
+const client = new MongoClient(process.env.password_is_optional_MONGODB_URI)
 
 export default async function handler(req, res) {
   await client.connect()
