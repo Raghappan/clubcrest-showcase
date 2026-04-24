@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const STATUS_STYLES: Record<string, string> = {
   ACTIVE:  "bg-acid text-ink",
@@ -9,7 +9,14 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 export default function Operations() {
-  return (
+  const [OPERATIONS, setOperations] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/operations')
+      .then(res => res.json())
+      .then(data => setOperations(data))
+  }, []);
+   return (
     <section id="operations" className="border-t border-ink bg-paper-deep">
       <div className="container py-20 md:py-28">
         <div className="grid grid-cols-12 gap-x-6 gap-y-10 mb-12">
