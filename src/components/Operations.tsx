@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { OPERATIONS } from "@/data/syndicate";
+import { useState, useEffect } from "react";
 
 const STATUS_STYLES: Record<string, string> = {
   ACTIVE:  "bg-acid text-ink",
