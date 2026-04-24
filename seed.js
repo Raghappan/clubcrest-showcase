@@ -13,13 +13,26 @@ const operations = [
   { code: "OP-036", name: "Obsidian",   cell: "DOCTRINE", status: "DRAFT",   desc: "The internal canon — a living engineering doctrine.", week: 2 },
 ]
 
+const operators = [
+  { handle: "@arclite", name: "K. Vaarsa",  rank: "cto",    cell: "CHAIR",  region: "BLR", specialty: "Systems architecture", joined: "W01" },
+  { handle: "@ferrum",  name: "R. Kapadia", rank: "senior", cell: "FORGE",  region: "BLR", specialty: "Infra / Rust",         joined: "W02" },
+  { handle: "@cobalt",  name: "S. Menon",   rank: "mid",    cell: "PRISM",  region: "MAA", specialty: "Interfaces / Motion",  joined: "W02" },
+  { handle: "@helio",   name: "D. Joshi",   rank: "junior", cell: "ATLAS",  region: "PUN", specialty: "Maps / Data",          joined: "W03" },
+  { handle: "@vector",  name: "T. Bhalla",  rank: "intern", cell: "VAULT",  region: "DEL", specialty: "Security / Auth",      joined: "W03" },
+]
+
 async function seed() {
   await client.connect()
   const db = client.db('clubcrest')
-  const collection = db.collection('operations')
-  await collection.deleteMany({}) // clear existing
-  await collection.insertMany(operations)
+  
+  await db.collection('operations').deleteMany({})
+  await db.collection('operations').insertMany(operations)
   console.log('Seeded 8 operations!')
+  
+  await db.collection('operators').deleteMany({})
+  await db.collection('operators').insertMany(operators)
+  console.log('Seeded 5 operators!')
+  
   await client.close()
 }
 

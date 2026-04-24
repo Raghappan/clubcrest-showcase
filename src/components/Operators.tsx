@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { OPERATORS, ALL_RANKS, RECRUITMENT } from "@/data/syndicate";
-import { useMemo, useState } from "react";
+import { ALL_RANKS, RECRUITMENT } from "@/data/syndicate";
+import { useMemo, useState, useEffect } from "react";
 
 const RANK_COLORS: Record<string, string> = {
   cto:           "bg-acid text-ink",
@@ -15,9 +15,15 @@ const RANK_COLORS: Record<string, string> = {
   junior:        "bg-paper text-muted-foreground border border-ink/40",
   intern:        "bg-paper text-muted-foreground border border-dashed border-ink/40",
 };
-
-export default function Operators() {
+ export default function Operators() {
   const [filter, setFilter] = useState<string>("ALL");
+  const [OPERATORS, setOperators] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/operators')
+      .then(res => res.json())
+      .then(data => setOperators(data))
+  }, []);
 
   const sorted = useMemo(() => {
     const order = (id: string) => ALL_RANKS.findIndex((r) => r.id === id);
