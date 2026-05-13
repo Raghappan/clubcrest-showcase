@@ -1,6 +1,6 @@
 # ClubCrest Showcase
 
-A full-stack web application for college club discovery and management, built with React, TypeScript, and Supabase.
+A full-stack web application for discord server discovery and management, built with React, TypeScript, and Supabase.
 
 ## Features
 
